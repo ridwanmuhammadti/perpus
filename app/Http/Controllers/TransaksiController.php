@@ -21,7 +21,8 @@ class TransaksiController extends Controller
         $users = User::all();
         $anggotas = Anggota::all();
         $bukus = Buku::all();
-        $transaksis = Transaksi::orderBy('id', 'DESC')->get();;
+        $transaksis = Transaksi::orderBy('kode_transaksi', 'DESC')->get();
+        // dd($transaksis);
         return view('backend.transaksi.index',compact('transaksis','anggotas','users','bukus'));
     }
 
@@ -108,32 +109,39 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // mengambil id dari data 
         $transaksi = Transaksi::find($id);
-        // $tgl_kembalis = $transaksi->where('tgl_kembali', $transaksi->tgl_kembali);
+        // mengambil feild tgl_kambali dari table Transaksi
         $tgl_kembalis = $transaksi->tgl_kembali;
-       
-      
+        // function mengambil tanggal hari ini
+        $date = Carbon::now()->addDays(-1);
         // dd($tgl_kembalis);
-       
-       $date = Carbon::now()->addDays(-1);
-        // dd($date);
+        $datetime2 = new Carbon($transaksi->tgl_kembali);
+        $datenow =Carbon::now()->addDays(-1);
+        $durasi = date_diff($datetime2, $datenow);
+        // $datetime2 = strtotime($transaksi->tgl_kembali);
+        // $datenow = strtotime(Carbon::now()->addDays(-1));
+        // $durasi = ($datetime2 - $datenow) / 86400 ;
+        // dd($durasi->days);
 
         if($tgl_kembalis > $date){
             $transaksi->update([
-                
                 'status' => 'kembali',
+                'telat' => $durasi->days
                 ]);
+                // dd($transaksi);
         $transaksi->buku->where('id', $transaksi->buku->id)
                         ->update([
                             'jumlah_buku' => ($transaksi->buku->jumlah_buku + 1),
                             ]);
-           
-        }
-        else {
+        }else {
             $transaksi->update([
                 'ket' => 'denda',
-                    'status' => 'kembali'
+                    'status' => 'kembali',
+                    'telat' => $durasi->days
                     ]);
+                    
+                // dd($transaksi);
             $transaksi->buku->where('id', $transaksi->buku->id)
                             ->update([
                                 'jumlah_buku' => ($transaksi->buku->jumlah_buku + 1),

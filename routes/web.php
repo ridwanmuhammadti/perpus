@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth','CheckRole:admin']], function () {
 Route::group(['middleware' => ['auth','CheckRole:admin,anggota']], function () {
 
     Route::get('/dashboard','DashboardController@index');
+    Route::get('/utama','DashboardController@utama');
 
     Route::get('/transaksi/create','TransaksiController@create');
     Route::post('/transaksi/store','TransaksiController@store');

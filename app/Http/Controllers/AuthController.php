@@ -15,7 +15,7 @@ class AuthController extends Controller
 
     public function postlogin(Request $request){
        if(Auth::attempt($request->only('email','password'))){
-           return redirect('/dashboard')->with('sukses','Berhasil Login');
+           return redirect('/utama')->with('sukses','Berhasil Login');
        }
        return redirect()->back()->with('error','email atau password salah');
         
@@ -45,7 +45,7 @@ class AuthController extends Controller
                
                 'password' => bcrypt($request->new_password),
             ]);
-            return redirect('/dashboard');
+            return redirect('/utama');
         }
 
     }

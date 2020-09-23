@@ -30,4 +30,8 @@ class DashboardController extends Controller
         return view('backend.dashboard.index',compact('anggotas','bukus','transaksis','transaksi','datas'));
     }
 
+    public function utama(){
+        return view('backend.dashboard.utama');
+    }
+
 }

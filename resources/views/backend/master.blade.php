@@ -5,13 +5,15 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>BPSDMD  &mdash; KAL-SEL </title>
-
-  <link rel="shortcut icon" href="{{ asset('/images') }}/kalsel.png">
+  <link rel="shortcut icon" href="{{ asset('/front/assets') }}/img/favicon.png">
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('/backend')}}/assets/modules/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{asset('/backend')}}/assets/modules/fontawesome/css/all.min.css">
 
   <!-- CSS Libraries -->
+
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+
   <link rel="stylesheet" href="{{asset('/backend')}}/assets/modules/bootstrap-daterangepicker/daterangepicker.css">
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -27,7 +29,6 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('/backend')}}/assets/css/style.css">
   <link rel="stylesheet" href="{{asset('/backend')}}/assets/css/components.css">
-<!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -101,7 +102,8 @@
           </div>
           <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            <li><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="/utama"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span>Pengembalian</span></a></li>
             <li class="menu-header">Starter</li>
             @if (auth()->user()->role == 'admin')
             <li class="dropdown">
@@ -113,7 +115,7 @@
               </ul>
             </li>
 
-            <li><a class="nav-link" href="/transaksi"><i class="fa fa-undo"></i> <span>Transaksi</span></a></li>
+            <li><a class="nav-link" href="/transaksi"><i class="fa fa-undo"></i> <span>Peminjaman</span></a></li>
             <li><a class="nav-link" href="/laporan"><i class="fa fa-file-alt"></i> <span>Laporan</span></a></li>
          
             
@@ -156,13 +158,6 @@
     </div>
   </div>
 
-  @yield('js')
-
-  <script>
-    $(document).ready(function(){
- 
-  })
-  </script>
   <!-- General JS Scripts -->
   <script src="{{asset('/backend')}}/assets/modules/jquery.min.js"></script>
   <script src="{{asset('/backend')}}/assets/modules/popper.js"></script>
@@ -173,6 +168,8 @@
   <script src="{{asset('/backend')}}/assets/js/stisla.js"></script>
   
   <!-- JS Libraies -->
+
+  <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
   <script src="{{asset('/backend')}}/assets/modules/izitoast/js/iziToast.min.js"></script>
 

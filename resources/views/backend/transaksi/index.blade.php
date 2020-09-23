@@ -15,7 +15,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-striped" id="table-1">
+                <table class="table table-striped" id="myTable">
                   <thead>                                 
                     <tr>
                       <th class="text-center">
@@ -26,6 +26,7 @@
                       <th>Tanggal Pinjam</th>
                       <th>Tanggal Kembali</th>
                       <th>Status</th>
+                      <th>Telat</th>
                       <th>Keterangan</th>
                       <th>Action</th>
                       
@@ -41,8 +42,8 @@
                      
                       <td>{{ $item->buku->judul }}</td>
                       <td>{{ $item->anggota->nama }}</td>
-                      <td>{{$item->tgl_pinjam}}</td>
-                      <td>{{ $item->tgl_kembali }}</td>
+                      <td>{{Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d F Y')}}</td>
+                      <td>{{ Carbon\Carbon::parse($item->tgl_kembali)->translatedFormat('d F Y') }}</td>
                       <td>@if ($item->status == 'pinjam')
                         <span class="badge badge-warning">Pinjam
                         </span>
@@ -50,14 +51,26 @@
                           <span class="badge badge-primary">Kembali
                           </span>
                       @endif</td>
-                      <td>@if ($item->status == 'pinjam')
-                          <span class="badge badge-secondary">Sedang di pinjam</span>
-                          @elseif($item->status = 'kembali' && $item->ket =='denda')
-                          <span class="badge badge-danger">Denda</span>
+                      <td>
+                       
+                        @if($item->status = 'kembali' && $item->ket =='denda')
+                        <span class="badge badge-danger">{{ $item->telat }} Hari</span>
+                       
+                        @else 
+                       <span class="badge badge-success" >Tidak Telat</span>
+                    @endif
+                      </td>
+
+                      <td style="text-align: center">
+
+                          @if($item->status = 'kembali' && $item->ket =='denda')
+                          
+                          <span class="badge badge-danger">Denda Rp. {{ $item->telat * 2000 }}</span>
                          
                           @else 
-                         <span class="badge badge-success">Clear</span>
+                         <span class="badge badge-success" >Clear</span>
                       @endif</td>
+                  
                       <td>
                         @if($item->status === 'pinjam')
                         <form action="/transaksi/{{ $item->id }}/update" method="post">
@@ -88,6 +101,14 @@
 
 
 @section('js')
+
+
+<script>
+  $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
     <script>
       $('.delete').click(function(){
         var transaksi_id = $(this).attr('transaksi-id');

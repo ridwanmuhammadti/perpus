@@ -104,7 +104,7 @@
 @endif
 
 <div class="table-responsive mt-4">
-  <table class="table table-striped" id="table-1">
+  <table class="table table-striped" id="myTable">
     <thead>                                 
       <tr>
         <th class="text-center">
@@ -131,8 +131,8 @@
      
       <td style="text-align: center">{{ $item->buku->judul }}</td>
       <td style="text-align: center">{{ $item->anggota->nama }}</td>
-      <td style="text-align: center">{{$item->tgl_pinjam}}</td>
-      <td style="text-align: center">{{ $item->tgl_kembali }}</td>
+      <td>{{Carbon\Carbon::parse($item->tgl_pinjam)->translatedFormat('d F Y')}}</td>
+                      <td>{{ Carbon\Carbon::parse($item->tgl_kembali)->translatedFormat('d F Y') }}</td>
       <td style="text-align: center">@if ($item->status == 'pinjam')
         <span class="badge badge-warning">Pinjam
         </span>
@@ -173,4 +173,37 @@
 
 </div>
 
+@endsection
+
+
+@section('js')
+
+
+<script>
+  $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+    <script>
+      $('.delete').click(function(){
+        var transaksi_id = $(this).attr('transaksi-id');
+        swal({
+            title: "Yakin?",
+            text: "Mau dihapus Data transaksi dengan Id "+transaksi_id+" ??",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            console.log(willDelete);
+            if (willDelete) {
+              window.location = "/transaksi/"+transaksi_id+"/destroy";
+              swal("Data Berhasil dihapus !!", {
+                icon: "success",
+              });
+            } 
+          });
+      });
+    </script>
 @endsection
